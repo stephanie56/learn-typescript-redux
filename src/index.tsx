@@ -1,11 +1,20 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import Hello from './Hello';
-import './index.css';
+import { Provider } from 'react-redux';
+import App from './app';
+
+import { store } from './state/store';
+
 import registerServiceWorker from './registerServiceWorker';
 
+const AppComponent = () => (
+  <Provider store={store}>
+    <App/>
+  </Provider>
+);
+
 ReactDOM.render(
-  <Hello name="Stephanie" enthusiasmLevel={4}/>,
+  <AppComponent/>,
   document.getElementById('root') as HTMLElement
 );
 registerServiceWorker();
