@@ -1,6 +1,18 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
 
-export const BusSchedule = () => (
+interface ScheduleObject {
+  busName: string;
+  stopName: string;
+  frequency: string;
+  nextArrival: string;
+}
+
+interface Props {
+  schedule: Array<ScheduleObject>;
+}
+
+const BusSchedule: React.StatelessComponent<Props> = ({schedule}: Props) => (
   <table>
     <thead>
       <tr>
@@ -11,24 +23,26 @@ export const BusSchedule = () => (
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <th scope="row">199A</th>
-        <td>Finch stn</td>
-        <td>10 minutes</td>
-        <td>10:12am</td>
-      </tr>
-      <tr>
-        <th scope="row">39</th>
-        <td>Finch stn</td>
-        <td>5 minutes</td>
-        <td>10:31am</td>
-      </tr>
-      <tr>
-        <th scope="row">53</th>
-        <td>Finch stn</td>
-        <td>12 minutes</td>
-        <td>10:05am</td>
-      </tr>
+      {
+        schedule.map(({busName, stopName, frequency, nextArrival}) => {
+          return (
+            <tr key={busName}>
+              <th scope="row">{busName}</th>
+              <td>{stopName}</td>
+              <td>{frequency}</td>
+              <td>{nextArrival}</td>
+            </tr>
+          );
+        }
+      )}
     </tbody>
   </table>
 );
+
+const ConnectedSchedule = connect((state) => {
+  schedule: state.schedule
+}, null)(BusSchedule);
+
+export {
+  ConnectedSchedule as BusSchedule
+}
